@@ -32,7 +32,7 @@ void main(void) {
 
   fragmentColor.rgb = vec3(0.0, 0.0, 0.0);
 
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < 3; i++) {
     vec3 lightDiff = lights[i].position.xyz - worldPosition.xyz * lights[i].position.w;
     vec3 lightDir = normalize (lightDiff); // lights[i].position.xyz
     float distanceSquared = dot(lightDiff, lightDiff);

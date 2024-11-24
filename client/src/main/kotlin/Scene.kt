@@ -1,5 +1,6 @@
 import org.w3c.dom.HTMLCanvasElement
 import vision.gears.webglmath.UniformProvider
+import vision.gears.webglmath.Vec3
 import kotlin.js.Date
 import kotlin.math.cos
 import kotlin.math.sin
@@ -74,7 +75,9 @@ class Scene (
     lights[0].position.set(1.0f, 1.0f, 1.0f, 0.0f).normalize()
     lights[0].powerDensity.set(1.0f, 1.0f, 1.0f)
     lights[1].position.set(0.0f, 0.0f, 0.0f, 1.0f)
-    lights[1].powerDensity.set(100.0f, 50.0f, 50.0f)
+    lights[1].powerDensity.set(0f, 100f)
+    lights[2] = Headlight(2, slowpokeObject, Vec3(0f, 0f, 10f))
+    lights[2].powerDensity.set(0f, 0f, 100f)
   }
 
 
@@ -101,7 +104,8 @@ class Scene (
     val t = (timeAtThisFrame - timeAtFirstFrame).toFloat() / 1000.0f
     timeAtLastFrame = timeAtThisFrame
 
-//    slowpokeObject.position += Vec3(10 * dt, 2 * dt, 0f)
+    slowpokeObject.roll += 2 * dt
+    slowpokeObject.position += Vec3(0.25f * sin(t), 0f)
 
     //LABTODO: move camera
     camera.move(dt, keysPressed)
@@ -118,8 +122,10 @@ class Scene (
       GL.ONE_MINUS_SRC_ALPHA)
 
     gameObjects.forEach{ it.move(dt, t, keysPressed, gameObjects) }
-
     gameObjects.forEach{ it.update() }
+
+    lights.forEach { if (it is Headlight) it.update() }
+
     gameObjects.forEach{ it.draw(this, camera, *lights) }
   }
 }
