@@ -5,4 +5,5 @@
 - Point light sources
 - Headlights
 - Diffuse lighting
+- Specular lighting w/ Phong-Blinn model
 - Environment mapping
