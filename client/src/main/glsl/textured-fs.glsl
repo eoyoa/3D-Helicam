@@ -35,7 +35,10 @@ void main(void) {
   for (int i = 0; i < 2; i++) {
     vec3 lightDiff = lights[i].position.xyz - worldPosition.xyz * lights[i].position.w;
     vec3 lightDir = normalize (lightDiff); // lights[i].position.xyz
-    float distanceSquared = dot(lightDiff, lightDiff); 
+    float distanceSquared = dot(lightDiff, lightDiff);
+    if (lights[i].position.w < 1.0) {
+      distanceSquared = 1.0;
+    }
     vec3 powerDensity = lights[i].powerDensity / distanceSquared; //lights[i].powerDensity
 
     fragmentColor.rgb += shade(normal, lightDir, powerDensity, 

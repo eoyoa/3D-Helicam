@@ -55,23 +55,26 @@ class Scene (
   val backgroundMesh = Mesh(backgroundMaterial, texturedQuadGeometry)
 
   val slowpokeObject = GameObject(*slowpokeMeshes)
+  val slowpokeObject2 = GameObject(*slowpokeMeshes)
   val envMappedSlowpokeObject = GameObject(*envmappedSlowpokeMeshes)
 
   init{
     backgroundMaterial["envTexture"]?.set( this.envTexture )
 
     gameObjects += slowpokeObject
-    slowpokeObject.position.set(5.0f, 5.0f, 5.0f);
+    slowpokeObject.position.set(5.0f, 10.0f, 5.0f)
+    gameObjects += slowpokeObject2
+    slowpokeObject2.position.set(5.0f, -10.0f, 5.0f)
     gameObjects += envMappedSlowpokeObject
     gameObjects += GameObject(backgroundMesh)
   }
 
   val lights = Array<Light>(8) { Light(it) }
   init{
-    lights[0].position.set(1.0f, 1.0f, 1.0f, 0.0f).normalize();
-    lights[0].powerDensity.set(1.0f, 1.0f, 1.0f);
-    lights[1].position.set(10.0f, 10.0f, 10.0f, 1.0f).normalize();
-    lights[1].powerDensity.set(1.0f, 0.0f, 1.0f);
+    lights[0].position.set(1.0f, 1.0f, 1.0f, 0.0f).normalize()
+    lights[0].powerDensity.set(1.0f, 1.0f, 1.0f)
+    lights[1].position.set(0.0f, 0.0f, 0.0f, 1.0f)
+    lights[1].powerDensity.set(100.0f, 50.0f, 50.0f)
   }
 
 
@@ -103,7 +106,7 @@ class Scene (
     //LABTODO: move camera
     camera.move(dt, keysPressed)
     camera.update()
-    lights[1].position.set(sin(t), cos(t), cos(2f*t), 0f).normalize()
+    lights[1].position.set(sin(t), 0f, cos(t), 1f)
     
     gl.clearColor(0.3f, 0.0f, 0.3f, 1.0f)//## red, green, blue, alpha in [0, 1]
     gl.clearDepth(1.0f)//## will be useful in 3D ˙HUN˙ 3D-ben lesz hasznos
