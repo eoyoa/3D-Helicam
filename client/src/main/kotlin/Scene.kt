@@ -1,6 +1,5 @@
 import org.w3c.dom.HTMLCanvasElement
 import vision.gears.webglmath.UniformProvider
-import vision.gears.webglmath.Vec3
 import kotlin.js.Date
 import kotlin.math.cos
 import kotlin.math.sin
@@ -62,6 +61,7 @@ class Scene (
     backgroundMaterial["envTexture"]?.set( this.envTexture )
 
     gameObjects += slowpokeObject
+    slowpokeObject.position.set(5.0f, 5.0f, 5.0f);
     gameObjects += envMappedSlowpokeObject
     gameObjects += GameObject(backgroundMesh)
   }
@@ -76,7 +76,7 @@ class Scene (
 
 
   // LABTODO: replace with 3D camera
-  val camera = HelicamCamera(slowpokeObject)
+  val camera = PerspectiveCamera()
 
   fun resize(canvas : HTMLCanvasElement) {
     gl.viewport(0, 0, canvas.width, canvas.height)//#viewport# tell the rasterizer which part of the canvas to draw to ˙HUN˙ a raszterizáló ide rajzoljon
@@ -98,10 +98,10 @@ class Scene (
     val t = (timeAtThisFrame - timeAtFirstFrame).toFloat() / 1000.0f
     timeAtLastFrame = timeAtThisFrame
 
-    slowpokeObject.position += Vec3(10 * dt, 2 * dt, 0f)
+//    slowpokeObject.position += Vec3(10 * dt, 2 * dt, 0f)
 
     //LABTODO: move camera
-//    camera.move(dt, keysPressed)
+    camera.move(dt, keysPressed)
     camera.update()
     lights[1].position.set(sin(t), cos(t), cos(2f*t), 0f).normalize()
     

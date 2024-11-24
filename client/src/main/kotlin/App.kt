@@ -37,25 +37,25 @@ class App(val canvas : HTMLCanvasElement, val overlay : HTMLDivElement) {
 
     canvas.onmousedown = { 
       event : MouseEvent ->
-//      scene.camera.mouseDown()
+      if (scene.camera is PerspectiveCamera) scene.camera.mouseDown()
       event
     }
 
     canvas.onmousemove = { 
       event : MouseEvent ->
-//      scene.camera.mouseMove(event)
+      if (scene.camera is PerspectiveCamera) scene.camera.mouseMove(event)
       event.stopPropagation()
     }
 
     canvas.onmouseup = { 
       event : Event ->
-//      scene.camera.mouseUp()
+      if (scene.camera is PerspectiveCamera) scene.camera.mouseUp()
       event // This line is a placeholder for event handling code. It has no effect, but avoids the "unused parameter" warning.
     }
 
     canvas.onmouseout = { 
       event : Event ->
-//      scene.camera.mouseUp()
+      if (scene.camera is PerspectiveCamera) scene.camera.mouseUp()
       event // This line is a placeholder for event handling code. It has no effect, but avoids the "unused parameter" warning.
     }
 
