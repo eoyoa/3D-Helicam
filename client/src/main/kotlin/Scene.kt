@@ -1,5 +1,6 @@
 import org.w3c.dom.HTMLCanvasElement
 import vision.gears.webglmath.UniformProvider
+import vision.gears.webglmath.Vec1
 import vision.gears.webglmath.Vec3
 import kotlin.js.Date
 import kotlin.math.cos
@@ -14,10 +15,12 @@ class Scene (
   val fsTextured = Shader(gl, GL.FRAGMENT_SHADER, "textured-fs.glsl")
   val fsBackground = Shader(gl, GL.FRAGMENT_SHADER, "background-fs.glsl")
   val fsEnvmapped = Shader(gl, GL.FRAGMENT_SHADER, "envmapped-fs.glsl")
+  val fsSpecular = Shader(gl, GL.FRAGMENT_SHADER, "specular-fs.glsl")
 
   val texturedProgram = Program(gl, vsTextured, fsTextured)
   val backgroundProgram = Program(gl, vsQuad, fsBackground)
   val envmappedProgram = Program(gl, vsTextured, fsEnvmapped)
+  val specularProgram = Program(gl, vsTextured, fsSpecular)
 
   val texturedQuadGeometry = TexturedQuadGeometry(gl)
 
@@ -41,6 +44,25 @@ class Scene (
           Texture2D(gl, "media/slowpoke/YadonEyeDh.png"))
     }
   )
+  val shinySlowpokeMeshes = jsonLoader.loadMeshes(gl,
+    "media/slowpoke/slowpoke.json",
+    Material(specularProgram).apply{
+      this["colorTexture"]?.set(
+        Texture2D(gl, "media/slowpoke/YadonDh.png"))
+      this["specularColor"]?.set(
+        Vec3(0.5f, 0.5f, 0.5f))
+      this["shininess"]?.set(
+        Vec1(1f))
+    },
+    Material(specularProgram).apply{
+      this["colorTexture"]?.set(
+        Texture2D(gl, "media/slowpoke/YadonEyeDh.png"))
+      this["specularColor"]?.set(
+        Vec3(0.5f, 0.5f, 0.5f))
+      this["shininess"]?.set(
+        Vec1(1f))
+    }
+  )
 
   val envmappedSlowpokeMeshes = jsonLoader.loadMeshes(gl,
     "media/slowpoke/slowpoke.json",
@@ -57,6 +79,7 @@ class Scene (
 
   val slowpokeObject = GameObject(*slowpokeMeshes)
   val slowpokeObject2 = GameObject(*slowpokeMeshes)
+  val shinySlowpoke = GameObject(*shinySlowpokeMeshes)
   val envMappedSlowpokeObject = GameObject(*envmappedSlowpokeMeshes)
 
   init{
@@ -66,6 +89,8 @@ class Scene (
     slowpokeObject.position.set(5.0f, 10.0f, 5.0f)
     gameObjects += slowpokeObject2
     slowpokeObject2.position.set(5.0f, -10.0f, 5.0f)
+    gameObjects += shinySlowpoke
+    shinySlowpoke.position.set(-5f, -10f, 5f)
     gameObjects += envMappedSlowpokeObject
     gameObjects += GameObject(backgroundMesh)
   }
