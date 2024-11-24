@@ -42,7 +42,7 @@ class Scene (
     }
   )
 
-  val envmapeddSlowpokeMeshes = jsonLoader.loadMeshes(gl,
+  val envmappedSlowpokeMeshes = jsonLoader.loadMeshes(gl,
     "media/slowpoke/slowpoke.json",
     Material(envmappedProgram).apply{
       this["envTexture"]?.set(envTexture)
@@ -56,13 +56,13 @@ class Scene (
   val backgroundMesh = Mesh(backgroundMaterial, texturedQuadGeometry)
 
   val slowpokeObject = GameObject(*slowpokeMeshes)
-  val slowpokeObject2 = GameObject(*slowpokeMeshes)
+  val envMappedSlowpokeObject = GameObject(*envmappedSlowpokeMeshes)
 
   init{
     backgroundMaterial["envTexture"]?.set( this.envTexture )
 
     gameObjects += slowpokeObject
-    gameObjects += slowpokeObject2
+    gameObjects += envMappedSlowpokeObject
     gameObjects += GameObject(backgroundMesh)
   }
 

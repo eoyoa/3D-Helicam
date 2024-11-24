@@ -30,16 +30,11 @@ class HelicamCamera(var trackedObject: GameObject) : UniformProvider("camera") {
     }
 
     fun update() {
-        console.log("tracked pos: ${trackedObject.position.x}, ${trackedObject.position.y}, ${trackedObject.position.z}")
         position.set(trackedObject.position + (worldUp + worldForward).normalize() * distanceFromObject)
-        console.log("helicam pos: ${position.x}, ${position.y}, ${position.z}")
 
         ahead = (trackedObject.position - position).normalize()
-        console.log("ahead: ${ahead.x}, ${ahead.y}, ${ahead.z}")
         right = ahead.cross(worldUp).normalize()
-        console.log("right: ${right.x}, ${right.y}, ${right.z}")
         up = right.cross(ahead)
-        console.log("up: ${up.x}, ${up.y}, ${up.z}")
 
         viewMatrix = Mat4(
             right.x ,   right.y ,   right.z ,   0f,
